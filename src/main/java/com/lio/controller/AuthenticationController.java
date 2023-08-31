@@ -65,8 +65,10 @@ public class AuthenticationController {
 	
 	// return the details of login user
 		@GetMapping("/current-user")
-		public User getCurrent(Principal principal) {
+		public User getCurrentUser(Principal principal) {
 			System.out.println("Comming here");
 			return (User) this.userDetailsServiceImpl.loadUserByUsername(principal.getName());
 		}
+		
+		
 }
