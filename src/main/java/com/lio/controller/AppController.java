@@ -1,5 +1,6 @@
 package com.lio.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class AppController {
 	public ResponseEntity<ApiResponse> getAppLockSettings(){
 		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		 User user=(User) authentication.getPrincipal();
-		AppLockSettings appLockSettings = this.appLockSettingsService.getAppLockSettingByUser(user);
+		AppLockSettings appLockSettings = this.appLockSettingsService.getAppLockSettingByUser(user.getUserId());
 		System.out.println(appLockSettings);
 		return ResponseEntity.ok(ApiResponse.builder().code(200).message("fetch the Data successfully").data(appLockSettings).build());
 	}
@@ -52,6 +53,12 @@ public class AppController {
 	@PostMapping("/saveLockSettings")
 	public ResponseEntity<ApiResponse> saveLockSettings(@RequestBody AppLockSettings appLockSettings){
 		System.out.println(appLockSettings);
+		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		 User user=(User) authentication.getPrincipal();
+		 appLockSettings.setUserId(user.getUserId());
+		 if(appLockSettings.getLockAppList() == null) {
+			 appLockSettings.setLockAppList(new ArrayList<>().toString());
+		 }
 		AppLockSettings saveAppLockSettings = this.appLockSettingsService.save(appLockSettings);
 		if(saveAppLockSettings != null) {
 			return ResponseEntity.ok(ApiResponse.builder().code(200).message("Save the AppLock Settings successfully").data(saveAppLockSettings).build());

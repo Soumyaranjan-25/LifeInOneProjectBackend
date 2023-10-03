@@ -16,8 +16,8 @@ public class AppLockSettingsServiceImpl implements AppLockSettingsService {
 	private AppLockSettingsRepository appLockSettingsRepository;
 	
 	@Override
-	public AppLockSettings getAppLockSettingByUser(User user) {
-		return appLockSettingsRepository.findByUser(user);
+	public AppLockSettings getAppLockSettingByUser(Integer userId) {
+		return appLockSettingsRepository.findByUserId(userId);
 	}
 
 	@Override

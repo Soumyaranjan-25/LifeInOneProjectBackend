@@ -37,9 +37,10 @@ public class AppLockSettings implements Serializable {
 	@Column(name = "lock_app_list")
 	private String lockAppList;
 	
-	@OneToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+//	@OneToOne
+//	@JoinColumn(name = "user_id")
+	@Column(name = "user_id")
+	private Integer userId;
 	
 	@Column(name = "is_app_lock_on")
 	private Boolean isAppLockOn;

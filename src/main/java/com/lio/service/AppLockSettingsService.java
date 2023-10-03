@@ -5,7 +5,7 @@ import com.lio.model.User;
 
 public interface AppLockSettingsService {
 
-	AppLockSettings getAppLockSettingByUser(User user);
+	AppLockSettings getAppLockSettingByUser(Integer userId);
 
 	AppLockSettings save(AppLockSettings appLockSettings);
 
