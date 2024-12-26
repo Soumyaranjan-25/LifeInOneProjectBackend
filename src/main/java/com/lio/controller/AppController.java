@@ -29,43 +29,43 @@ public class AppController {
 
 	@Autowired
 	private AppService appService;
-	
+
 	@Autowired
 	private AppLockSettingsService appLockSettingsService;
-	
+
 	@GetMapping("/")
-	public ResponseEntity<ApiResponse> getApps(){
-		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		 User user=(User) authentication.getPrincipal();
+	public ResponseEntity<ApiResponse> getApps() {
 		List<App> apps = this.appService.getAllApps();
-		return ResponseEntity.ok(ApiResponse.builder().code(200).message("fetch the Data successfully").data(apps).build());
+		return ResponseEntity
+				.ok(ApiResponse.builder().code(200).message("fetch the Data successfully").data(apps).build());
 	}
-	
+
 	@GetMapping("/getAppLockSettings")
-	public ResponseEntity<ApiResponse> getAppLockSettings(){
-		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		 User user=(User) authentication.getPrincipal();
+	public ResponseEntity<ApiResponse> getAppLockSettings() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
 		AppLockSettings appLockSettings = this.appLockSettingsService.getAppLockSettingByUser(user.getUserId());
 		System.out.println(appLockSettings);
-		return ResponseEntity.ok(ApiResponse.builder().code(200).message("fetch the Data successfully").data(appLockSettings).build());
+		return ResponseEntity.ok(
+				ApiResponse.builder().code(200).message("fetch the Data successfully").data(appLockSettings).build());
 	}
-	
+
 	@PostMapping("/saveLockSettings")
-	public ResponseEntity<ApiResponse> saveLockSettings(@RequestBody AppLockSettings appLockSettings){
-		System.out.println(appLockSettings);
-		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		 User user=(User) authentication.getPrincipal();
-		 appLockSettings.setUserId(user.getUserId());
-		 if(appLockSettings.getLockAppList() == null) {
-			 appLockSettings.setLockAppList(new ArrayList<>().toString());
-		 }
-		AppLockSettings saveAppLockSettings = this.appLockSettingsService.save(appLockSettings);
-		if(saveAppLockSettings != null) {
-			return ResponseEntity.ok(ApiResponse.builder().code(200).message("Save the AppLock Settings successfully").data(saveAppLockSettings).build());
+	public ResponseEntity<ApiResponse> saveLockSettings(@RequestBody AppLockSettings appLockSettings) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		User user = (User) authentication.getPrincipal();
+		appLockSettings.setUserId(user.getUserId());
+		if (appLockSettings.getLockAppList() == null) {
+			appLockSettings.setLockAppList(new ArrayList<>().toString());
 		}
-		else {
-			return ResponseEntity.ok(ApiResponse.builder().code(201).message("Error in save appLock Settings").data(appLockSettings).build());
+		AppLockSettings saveAppLockSettings = this.appLockSettingsService.save(appLockSettings);
+		if (saveAppLockSettings != null) {
+			return ResponseEntity.ok(ApiResponse.builder().code(200).message("Save the AppLock Settings successfully")
+					.data(saveAppLockSettings).build());
+		} else {
+			return ResponseEntity.ok(ApiResponse.builder().code(201).message("Error in save appLock Settings")
+					.data(appLockSettings).build());
 		}
 	}
-	
+
 }
